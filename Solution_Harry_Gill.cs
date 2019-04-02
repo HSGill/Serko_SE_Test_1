@@ -1,7 +1,7 @@
 /**
  * AUTHOR : Harry Gill
  * CREATED : 02-04-2019
- * Description: Check if two strings are anagrams of each other
+*  Description: REST SERVICE to return GST and Total Expense
  * Programming Language : C#
  */
 using System;
@@ -13,9 +13,7 @@ using System.Web.Http;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml;
-/// <summary>
-/// REST SERVICE to return GST and Total Expense
-/// </summary>
+
 namespace Serko_REST_Service.Controllers
 {
     public class ValuesController : ApiController
@@ -26,8 +24,8 @@ namespace Serko_REST_Service.Controllers
         {
             List<string> matches = new List<string>();
             Regex regex = new Regex("<([^<>]+).*>.*</\\1>", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            Match match = regex.Match(text);                 //<([^>]+).*>.*</\\1>, This looks for < followed by  > 
-            while (match.Success)                            // matches exactly the previous
+            Match match = regex.Match(text);                 //<([^>]+).*>.*</\\1>, Regular Expression looks for < followed by  > 
+            while (match.Success)                            // matches exactly the previous element
             {
                 matches.Add(match.Value);
                 match = match.NextMatch();
@@ -49,16 +47,12 @@ namespace Serko_REST_Service.Controllers
             float total_expense = 0;
             foreach (XmlNode xn in xnList)
             {
-
                 total_expense = float.Parse(xn["total"].InnerText);
 
             }
             float total_expense_excludingGST = (total_expense * 100) / 115;
             float GST = total_expense - total_expense_excludingGST;
-
             return (total_expense_excludingGST);
         }
-
-
     }
 }
