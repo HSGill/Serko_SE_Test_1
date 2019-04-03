@@ -39,15 +39,18 @@ namespace Serko_REST_Service.Controllers
             
             return embedded_xml;
         }
-
-        public float Total_Expense(XElement x)
+        /// <summary>
+        /// Function calculating Total expense(without GST) and GST
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns>total expense excluding GST</returns>
+        public float Total_Expense(XmlDocument doc)
         {
-            XmlDocument doc = new XmlDocument();
             XmlNodeList xnList = doc.SelectNodes("/r/r");
             float total_expense = 0;
             foreach (XmlNode xn in xnList)
             {
-                total_expense = float.Parse(xn["total"].InnerText);
+                total_expense = float.Parse(xn["total"].InnerText);        
 
             }
             float total_expense_excludingGST = (total_expense * 100) / 115;
